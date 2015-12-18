@@ -1,3 +1,7 @@
+import javafx.scene.control.ProgressIndicator;
+import org.apache.commons.io.IOUtils;
+
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
@@ -7,24 +11,45 @@ import java.util.Observer;
  * @version 1.0
  * Created on 2015-12-18.
  */
-public class DownloadManager implements Observer
+public class DownloadManager extends Observable implements Observer
 {
-    static String youtubeConverterURL = "http://www.youtubeinmp3.com/fetch/?video=";
-    ArrayList<HttpDownloadUtility> downloads;
+    static String youtubeConverterURL = "http://www.youtubeinmp3.com/fetch/?format=JSON&video=";
+    private String saveDir;
+
+    // keep all of the downloads from this session in a list
+    private ArrayList<HttpDownload> downloads;
+
+    public void setSaveDir(String saveDir)
+    {
+        this.saveDir = saveDir;
+    }
+
+    public String getSaveDir()
+    {
+        return saveDir;
+    }
+
+    public ArrayList<HttpDownload> getDownloads()
+    {
+        return downloads;
+    }
 
     DownloadManager()
     {
         downloads = new ArrayList<>();
     }
 
-    public void startNewYoutubeDownload(String youtubeLink, String saveDir)
+
+    public void startNewYoutubeDownload(String youtubeLink, ProgressIndicator progressIndicator)
     {
         try
         {
-            String downloadURL = youtubeConverterURL + youtubeLink;
-            HttpDownloadUtility download = new HttpDownloadUtility();
+            youtubeLink = youtubeLink.replace("https", "http"); // must be done for youtubeinmp3 API to work
+            String youtubeConverterLink = youtubeConverterURL + youtubeLink;
+            String downloadURL = JSONParser.getDownloadLink(youtubeConverterLink);
+            HttpDownload download = new HttpDownload();
             download.addObserver(this);
-            download.downloadFile(downloadURL, saveDir.toString());
+            download.downloadFile(downloadURL, saveDir, progressIndicator);
             downloads.add(download);
         }
         catch (Exception e)
@@ -33,14 +58,24 @@ public class DownloadManager implements Observer
         }
     }
 
+    /**
+     * Notify observers that the state changed.
+     * @param o send along an object with additional data
+     */
+    private void stateChanged(Object o)
+    {
+        setChanged();
+        notifyObservers(o);
+    }
+
     @Override
     public void update(Observable o, Object arg)
     {
-        HttpDownloadUtility notifier = (HttpDownloadUtility) arg;
-        System.err.println("State change: " + notifier.getCurrentStatus());
-        if (arg instanceof HttpDownloadUtility)
+        if (arg instanceof HttpDownload)
         {
-
+            HttpDownload notifier = (HttpDownload) arg;
+            System.err.println("State change: " + notifier.getCurrentStatus());
+            stateChanged(notifier);
         }
     }
 }
