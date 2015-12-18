@@ -13,30 +13,17 @@ import java.io.File;
 /**
  * Application that takes a youtube URL and downloads the MP3 of the video.
  * @author Axel Kennedal
- * @version 0.5
+ * @version 0.7
  */
 public class Main extends Application
 {
-    static String converterURL = "http://www.youtubeinmp3.com/fetch/?video=";
+
     static File destinationFolder;
     static Stage mainWindow;
 
     public static void main(String[] args)
     {
         launch();
-    }
-
-    public static void downloadTrack(String link)
-    {
-        try
-        {
-            String downloadURL = converterURL + link;
-            new HttpDownloadUtility().downloadFile(downloadURL, destinationFolder.toString());
-        }
-        catch (Exception e)
-        {
-
-        }
     }
 
     private static GridPane grid;
@@ -79,6 +66,8 @@ public class Main extends Application
 
         Button download = new Button("Download");
         grid.add(download, 2, 1);
-        download.setOnAction(event -> downloadTrack(linkField.getText()));
+        download.setOnAction(event -> {
+            new DownloadManager().startNewYoutubeDownload(linkField.getText(), destinationFolder.toString());
+        });
     }
 }

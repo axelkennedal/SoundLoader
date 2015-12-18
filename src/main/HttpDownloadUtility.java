@@ -4,15 +4,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Observable;
 
 /**
  * A utility that downloads a file from a URL. Performs download on a new Thread.
  * @author www.codejava.net & Axel Kennedal
- * @version 1.2
+ * @version 1.3
  */
-class HttpDownloadUtility implements Runnable
+class HttpDownloadUtility extends Observable implements Runnable
 {
     private static final int BUFFER_SIZE = 4096;
+    private enum STATUS {CONNECTING, DOWNLOADING, COMPLETED}
+    private STATUS currentStatus;
+
     private String fileURL;
     private String saveDir;
 
@@ -38,6 +42,7 @@ class HttpDownloadUtility implements Runnable
     private void downloadFile() throws IOException {
 
         // open connection and check if it's ok
+        setCurrentStatus(STATUS.CONNECTING);
         URL url = new URL(fileURL);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         int responseCode = connection.getResponseCode();
@@ -81,6 +86,7 @@ class HttpDownloadUtility implements Runnable
             FileOutputStream outputStream = new FileOutputStream(saveFilePath);
 
             // perform actual download
+            setCurrentStatus(STATUS.DOWNLOADING);
             int bytesRead;
             byte[] buffer = new byte[BUFFER_SIZE];
             while ((bytesRead = inputStream.read(buffer)) != -1)
@@ -90,6 +96,7 @@ class HttpDownloadUtility implements Runnable
 
             outputStream.close();
             inputStream.close();
+            setCurrentStatus(STATUS.COMPLETED);
 
             System.out.println("File downloaded");
         }
@@ -109,9 +116,34 @@ class HttpDownloadUtility implements Runnable
         try
         {
             downloadFile();
-        } catch (IOException e)
+        }
+        catch (IOException e)
         {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Notify observers each time the currentStatus is changed.
+     * @param currentStatus new status of the downkoad
+     */
+    private void setCurrentStatus(STATUS currentStatus)
+    {
+        this.currentStatus = currentStatus;
+        stateChanged();
+    }
+
+    public STATUS getCurrentStatus()
+    {
+        return currentStatus;
+    }
+
+    /**
+     * Notify observers that this download's status has changed.
+     */
+    private void stateChanged()
+    {
+        setChanged();
+        notifyObservers(this);
     }
 }
