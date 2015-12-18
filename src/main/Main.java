@@ -14,7 +14,7 @@ import java.util.Observer;
 /**
  * Application that takes a youtube URL and downloads the MP3 of the video.
  * @author Axel Kennedal
- * @version 0.7
+ * @version 0.8
  */
 public class Main extends Application implements Observer
 {
@@ -27,7 +27,7 @@ public class Main extends Application implements Observer
     private static GridPane grid;
     DownloadManager downloadManager;
     Text status;
-    ProgressIndicator progressIndicator;
+    ProgressBar progressIndicator;
 
     @Override
     public void start(Stage primaryStage) throws Exception
@@ -70,15 +70,16 @@ public class Main extends Application implements Observer
         Button download = new Button("Download");
         grid.add(download, 2, 1);
         download.setOnAction(event -> {
-            downloadManager.startNewYoutubeDownload(linkField.getText(), progressIndicator);
+            HttpDownload httpDownload = downloadManager.startNewYoutubeDownload(linkField.getText());
+
+            progressIndicator = new ProgressBar(0.0);
+            grid.add(progressIndicator, 1, 2);
+
+            progressIndicator.progressProperty().bind(httpDownload.downloadTask.progressProperty());
+
+            status = new Text("Idle");
+            grid.add(status, 0, 2, 1, 1);
         });
-
-        status = new Text("Idle");
-        grid.add(status, 0, 2, 1, 1);
-
-        progressIndicator = new ProgressIndicator(0.0);
-        progressIndicator
-        grid.add(progressIndicator, 1, 2);
     }
 
     @Override

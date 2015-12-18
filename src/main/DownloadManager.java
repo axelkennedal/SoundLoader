@@ -1,14 +1,11 @@
-import javafx.scene.control.ProgressIndicator;
-import org.apache.commons.io.IOUtils;
-
-import java.net.URL;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
 /**
  * @author Axel Kennedal
- * @version 1.0
+ * @version 1.5
  * Created on 2015-12-18.
  */
 public class DownloadManager extends Observable implements Observer
@@ -40,7 +37,7 @@ public class DownloadManager extends Observable implements Observer
     }
 
 
-    public void startNewYoutubeDownload(String youtubeLink, ProgressIndicator progressIndicator)
+    public HttpDownload startNewYoutubeDownload(String youtubeLink)
     {
         try
         {
@@ -49,13 +46,15 @@ public class DownloadManager extends Observable implements Observer
             String downloadURL = JSONParser.getDownloadLink(youtubeConverterLink);
             HttpDownload download = new HttpDownload();
             download.addObserver(this);
-            download.downloadFile(downloadURL, saveDir, progressIndicator);
+            download.downloadFile(downloadURL, saveDir);
             downloads.add(download);
+            return download;
         }
         catch (Exception e)
         {
 
         }
+        return null;
     }
 
     /**
@@ -76,6 +75,19 @@ public class DownloadManager extends Observable implements Observer
             HttpDownload notifier = (HttpDownload) arg;
             System.err.println("State change: " + notifier.getCurrentStatus());
             stateChanged(notifier);
+
+            // retry download a couple of times if it failed
+            if (notifier.getCurrentStatus() == HttpDownload.STATUS.FAILED && notifier.getAttempt() < 5)
+            {
+                notifier.setAttempt(notifier.getAttempt() + 1);
+                try
+                {
+                    notifier.downloadFile();
+                } catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }

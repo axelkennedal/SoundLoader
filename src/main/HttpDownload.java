@@ -1,5 +1,4 @@
 import javafx.concurrent.Task;
-import javafx.scene.control.ProgressIndicator;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -12,7 +11,7 @@ import java.util.Observable;
 /**
  * A utility that downloads a file from a URL. Performs download on a new Thread.
  * @author www.codejava.net & Axel Kennedal
- * @version 1.3
+ * @version 1.5
  */
 class HttpDownload extends Observable
 {
@@ -21,10 +20,13 @@ class HttpDownload extends Observable
     private STATUS currentStatus;
     private int bytesDownloaded = 0;
     private int fileSize = -1;
+    private int attempt = 1;
 
     private String fileURL; // URL to the file to download
     private String saveDir; // Local directory to save file to
     private String fileName; // Filename of file to download, determined automatically
+
+    Task downloadTask;
 
     /**
      * Downloads a file from a URL.
@@ -32,29 +34,21 @@ class HttpDownload extends Observable
      * @param saveDir path of the directory to save the file to
      * @throws IOException
      */
-    public void downloadFile(String fileURL, String saveDir, ProgressIndicator progressIndicator) throws IOException
+    public void downloadFile(String fileURL, String saveDir) throws IOException
     {
         this.fileURL = fileURL;
         this.saveDir = saveDir;
 
-        createDownloadWorker(progressIndicator);
+        downloadFile();
     }
 
     /**
-     * Helper method that performs actual download.
+     * Helper method that performs actual download, on a new thread.
      * @throws IOException
      */
-    private void downloadFile() throws IOException {
-
-
-    }
-
-    /**
-     * Perform download in a new Thread.
-     */
-    public void createDownloadWorker(ProgressIndicator progressIndicator) throws IOException
+    public void downloadFile() throws IOException
     {
-        Task downloadTask = new Task()
+        downloadTask = new Task()
         {
             @Override
             protected Object call() throws Exception
@@ -116,7 +110,7 @@ class HttpDownload extends Observable
                     {
                         outputStream.write(buffer, 0, bytesRead);
                         bytesDownloaded += bytesRead;
-                        updateProgress(getDownloadProgress(), 1.0);
+                        updateProgress((float) bytesDownloaded / fileSize, 1.0);
                     }
 
                     outputStream.close();
@@ -133,17 +127,7 @@ class HttpDownload extends Observable
                 return true;
             }
         };
-
-        progressIndicator.progressProperty().bind(downloadTask.progressProperty());
         new Thread(downloadTask).start();
-    }
-
-    /**
-     * @return [0.0, 1.0] describing download progress
-     */
-    public float getDownloadProgress()
-    {
-        return (float) bytesDownloaded / fileSize;
     }
 
     public int getFileSize()
@@ -169,6 +153,16 @@ class HttpDownload extends Observable
     public STATUS getCurrentStatus()
     {
         return currentStatus;
+    }
+
+    public int getAttempt()
+    {
+        return attempt;
+    }
+
+    public void setAttempt(int attempt)
+    {
+        this.attempt = attempt;
     }
 
     /**
