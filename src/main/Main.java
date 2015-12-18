@@ -31,7 +31,7 @@ public class Main extends Application
         try
         {
             String downloadURL = converterURL + link;
-            HttpDownloadUtility.downloadFile(downloadURL, destinationFolder.toString());
+            new HttpDownloadUtility().downloadFile(downloadURL, destinationFolder.toString());
         }
         catch (Exception e)
         {
