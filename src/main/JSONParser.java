@@ -24,7 +24,7 @@ public class JSONParser
         }
         catch (Exception e)
         {
-
+            e.printStackTrace();
         }
         return link;
     }
