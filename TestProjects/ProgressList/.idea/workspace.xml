@@ -2,13 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="83c5264a-116c-4f74-9357-a9731e7c856d" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../Sketch.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../.idea/artifacts/SoundLoader.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../src/main/UIManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ModelListener/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../ModelListener/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../src/main/JSONParser.java" afterPath="$PROJECT_DIR$/../../src/main/JSONParser.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../src/main/Main.java" afterPath="$PROJECT_DIR$/../../src/main/Main.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../src/main/UIManager.java" afterPath="$PROJECT_DIR$/../../src/main/UIManager.java" />
     </list>
     <ignored path="ProgressList.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -156,7 +150,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="129" y="275" width="1660" height="1023" extended-state="1" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />

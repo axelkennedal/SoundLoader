@@ -1,3 +1,4 @@
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -24,8 +25,8 @@ public class UIManager implements Observer
     // keep a pointer back to the main class so this class can communicate with others
     Main mainApplicationClass;
 
-    final static int WIDTH = 300;
-    final static int HEIGHT = 450;
+    final static int MIN_WIDTH = 300; final static int MAX_WIDTH = 400;
+    final static int MIN_HEIGHT = 450; final static int MAX_HEIGHT = 600;
 
     Stage mainWindow;
     GridPane layoutGrid;
@@ -59,9 +60,9 @@ public class UIManager implements Observer
     {
         mainWindow.setTitle("SoundLoader");
 
-        Scene mainScene = new Scene(layoutGrid, WIDTH, HEIGHT);
-        mainWindow.setMaxWidth(WIDTH); mainWindow.setMinWidth(WIDTH);
-        mainWindow.setMaxHeight(HEIGHT); mainWindow.setMinHeight(HEIGHT);
+        Scene mainScene = new Scene(layoutGrid, MIN_WIDTH, MIN_HEIGHT);
+        mainWindow.setMaxWidth(MAX_WIDTH); mainWindow.setMinWidth(MIN_WIDTH);
+        mainWindow.setMaxHeight(MAX_HEIGHT); mainWindow.setMinHeight(MIN_HEIGHT);
 
         mainWindow.setScene(mainScene);
     }
@@ -74,8 +75,9 @@ public class UIManager implements Observer
     {
         layoutGrid = new GridPane();
         layoutGrid.setGridLinesVisible(debug);
-        layoutGrid.setAlignment(Pos.CENTER);
+        layoutGrid.setAlignment(Pos.TOP_CENTER);
         layoutGrid.setHgap(10); layoutGrid.setVgap(10);
+        layoutGrid.setPadding(new Insets(20, 10, 10, 10));
     }
 
     /**
