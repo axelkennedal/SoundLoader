@@ -1,3 +1,6 @@
+package SoundLoader.Controller;
+
+import SoundLoader.View.UIManager;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -13,13 +16,23 @@ public class Main extends Application
         launch();
     }
 
-    UIManager uiManager;
-    DownloadManager downloadManager;
+    private UIManager uiManager;
+    private DownloadManager downloadManager;
 
     @Override
     public void start(Stage primaryStage) throws Exception
     {
         downloadManager = new DownloadManager();
         uiManager = new UIManager(this, primaryStage);
+    }
+
+    public UIManager getUiManager()
+    {
+        return uiManager;
+    }
+
+    public DownloadManager getDownloadManager()
+    {
+        return downloadManager;
     }
 }

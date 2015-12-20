@@ -1,3 +1,8 @@
+package SoundLoader.View;
+
+import SoundLoader.Controller.DownloadManager;
+import SoundLoader.Controller.Main;
+import SoundLoader.Model.HttpDownload;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -44,7 +49,7 @@ public class UIManager implements Observer
      * Main constructor, creates a graphical window and UI and displays it.
      * @param primaryStage
      */
-    UIManager(Main mainApplicationClass, Stage primaryStage)
+    public UIManager(Main mainApplicationClass, Stage primaryStage)
     {
         this.mainApplicationClass = mainApplicationClass;
         mainWindow = primaryStage;
@@ -116,8 +121,8 @@ public class UIManager implements Observer
     {
         downloadButton.setOnAction(event ->
                 progressIndicator.progressProperty().bind(
-                        mainApplicationClass.downloadManager.startNewYoutubeDownload(linkField.getText())
-                                .downloadTask.progressProperty()
+                        mainApplicationClass.getDownloadManager().startNewYoutubeDownload(linkField.getText())
+                                .getDownloadTask().progressProperty()
                 ));
 
         savingToButton.setOnAction(event -> {
@@ -125,8 +130,8 @@ public class UIManager implements Observer
             File saveDirectory = savingToDirectoryChooser.showDialog(mainWindow);
             if (saveDirectory != null)
             {
-                mainApplicationClass.downloadManager.setSaveDir(saveDirectory.toString());
-                savingToLabel.setText(mainApplicationClass.downloadManager.getSaveDir());
+                mainApplicationClass.getDownloadManager().setSaveDir(saveDirectory.toString());
+                savingToLabel.setText(mainApplicationClass.getDownloadManager().getSaveDir());
             }
         });
     }

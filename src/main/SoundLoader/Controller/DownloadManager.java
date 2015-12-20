@@ -1,3 +1,7 @@
+package SoundLoader.Controller;
+
+import SoundLoader.Model.HttpDownload;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Observable;

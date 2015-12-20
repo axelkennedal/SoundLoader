@@ -1,3 +1,5 @@
+package SoundLoader.Model;
+
 import javafx.concurrent.Task;
 
 import java.io.File;
@@ -13,7 +15,7 @@ import java.util.Observable;
  * @author www.codejava.net & Axel Kennedal
  * @version 1.5
  */
-class HttpDownload extends Observable
+public class HttpDownload extends Observable
 {
     private static final int BUFFER_SIZE = 4096;
     public enum STATUS {CONNECTING, DOWNLOADING, COMPLETED, FAILED}
@@ -26,7 +28,7 @@ class HttpDownload extends Observable
     private String saveDir; // Local directory to save file to
     private String fileName; // Filename of file to download, determined automatically
 
-    Task downloadTask;
+    private Task downloadTask;
 
     /**
      * Downloads a file from a URL.
@@ -163,6 +165,11 @@ class HttpDownload extends Observable
     public void setAttempt(int attempt)
     {
         this.attempt = attempt;
+    }
+
+    public Task getDownloadTask()
+    {
+        return downloadTask;
     }
 
     /**
