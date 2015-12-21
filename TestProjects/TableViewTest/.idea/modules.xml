@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/TableViewTest.iml" filepath="$PROJECT_DIR$/TableViewTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/TableviewTest.iml" filepath="$PROJECT_DIR$/TableviewTest.iml" />
     </modules>
   </component>
 </project>

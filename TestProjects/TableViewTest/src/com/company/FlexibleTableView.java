@@ -1,5 +1,6 @@
 package com.company;
 
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -63,6 +64,20 @@ public class FlexibleTableView
                     tableView.widthProperty().multiply(percentageWidths[i])
             );
         }
+    }
+
+    /**
+     * Set the data that is to be displayed by this table.
+     * @param data
+     */
+    public void setData(ObservableList data)
+    {
+        tableView.setItems(data);
+    }
+
+    public TableView getTableView()
+    {
+        return tableView;
     }
 
     public StackPane getContainer()
