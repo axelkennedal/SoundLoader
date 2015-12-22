@@ -10,7 +10,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.ProgressBarTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.Clipboard;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
@@ -19,7 +21,7 @@ import java.io.File;
 /**
  * Creates and manages everything UI.
  * @author Axel Kennedal
- * @version 2.0
+ * @version 2.2
  * Created on 2015-12-20.
  */
 public class UIManager
@@ -33,7 +35,6 @@ public class UIManager
     Stage mainWindow;
     GridPane layoutGrid;
 
-    TextField linkField;
     Button downloadButton;
     Button savingToButton;
     Label savingToLabel;
@@ -87,23 +88,28 @@ public class UIManager
      */
     private void createAndPlaceComponents()
     {
-        linkField = new TextField();
-        layoutGrid.add(linkField, 0, 0, 2, 1);
+        Label clipboardLabel = new Label(
+                "Copy a Youtube link (cmd-c or ctrl-c) " +
+                "and then click Download");
+        clipboardLabel.setWrapText(true);
+        clipboardLabel.setTextAlignment(TextAlignment.CENTER);
+        clipboardLabel.setMinHeight(40);
+        layoutGrid.add(clipboardLabel, 0, 0, 3, 1);
 
         downloadButton = new Button("Download");
-        layoutGrid.add(downloadButton, 2, 0);
+        layoutGrid.add(downloadButton, 1, 1);
 
         savingToButton = new Button("Saving to:");
-        layoutGrid.add(savingToButton, 0, 1);
+        layoutGrid.add(savingToButton, 0, 2);
 
         savingToLabel = new Label("<- Click to choose location");
-        layoutGrid.add(savingToLabel, 1 ,1 ,2, 1);
+        layoutGrid.add(savingToLabel, 1 ,2 ,2, 1);
 
         downloadsLabel = new Label("Downloads");
-        layoutGrid.add(downloadsLabel, 1, 2);
+        layoutGrid.add(downloadsLabel, 1, 3);
 
         createTable();
-        layoutGrid.add(flexibleTableView.getContainer(), 0, 3, 3, 1);
+        layoutGrid.add(flexibleTableView.getContainer(), 0, 4, 3, 1);
 
     }
 
@@ -137,14 +143,7 @@ public class UIManager
      */
     private void setEventHandlers()
     {
-        downloadButton.setOnAction(event ->
-                {
-                    mainApplicationClass.getDownloadManager().startNewYoutubeDownload(
-                            linkField.getText().trim()
-                    );
-
-                }
-        );
+        downloadButton.setOnAction(event -> startNewDownloadWithClipboardURL());
 
         savingToButton.setOnAction(event -> {
             DirectoryChooser savingToDirectoryChooser = new DirectoryChooser();
@@ -155,6 +154,20 @@ public class UIManager
                 savingToLabel.setText(mainApplicationClass.getDownloadManager().getSaveDir());
             }
         });
+    }
+
+    /**
+     * Attempts to get the URL currently stored in the system clipboard and
+     * uses it to initiate a download.
+     */
+    private void startNewDownloadWithClipboardURL()
+    {
+        Clipboard clipboard = Clipboard.getSystemClipboard();
+        if (clipboard.hasString())
+        {
+            String clipBoardString = clipboard.getString().trim();
+            mainApplicationClass.getDownloadManager().startNewYoutubeDownload(clipBoardString);
+        }
     }
 
     public FlexibleTableView getFlexibleTableView()
