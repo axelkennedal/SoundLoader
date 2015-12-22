@@ -6,7 +6,7 @@ import java.net.URL;
 
 /**
  * @author Axel Kennedal
- * @version 1.0
+ * @version 1.3
  * Created on 2015-12-18.
  */
 public class JSONParser

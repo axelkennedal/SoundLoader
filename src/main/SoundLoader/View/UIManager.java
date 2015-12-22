@@ -19,7 +19,7 @@ import java.io.File;
 /**
  * Creates and manages everything UI.
  * @author Axel Kennedal
- * @version 1.0
+ * @version 2.0
  * Created on 2015-12-20.
  */
 public class UIManager

@@ -14,7 +14,7 @@ import java.util.Observable;
 /**
  * A utility that downloads a file from a URL. Performs download on a new Thread.
  * @author www.codejava.net & Axel Kennedal
- * @version 1.5
+ * @version 2.0
  */
 public class HttpDownload extends Task
 {

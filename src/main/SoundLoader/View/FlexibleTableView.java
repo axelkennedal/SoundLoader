@@ -11,7 +11,7 @@ import javafx.scene.layout.StackPane;
 
 /**
  * @author Axel Kennedal
- * @version 1.0
+ * @version 1.1
  * Created on 2015-12-21.
  */
 public class FlexibleTableView

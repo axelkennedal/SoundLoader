@@ -12,12 +12,13 @@ import java.util.Observer;
 
 /**
  * @author Axel Kennedal
- * @version 1.5
+ * @version 2.0
  * Created on 2015-12-18.
  */
 public class DownloadManager
 {
-    static String youtubeConverterURL = "http://www.youtubeinmp3.com/fetch/?format=JSON&video=";
+    private static String youtubeConverterURL = "http://www.youtubeinmp3.com/fetch/?format=JSON&video=";
+    private static int MAX_RETRIES = 5;
     private String saveDir;
     Main mainApplicationClass;
 
@@ -40,6 +41,11 @@ public class DownloadManager
      */
     public HttpDownload startNewYoutubeDownload(String youtubeLink)
     {
+        if (saveDir == null)
+        {
+            return null;
+        }
+
         try
         {
             youtubeLink = youtubeLink.replace("https", "http"); // must be done for youtubeinmp3 API to work
@@ -47,7 +53,7 @@ public class DownloadManager
             String downloadURL = JSONParser.getDownloadLink(youtubeConverterLink);
 
             int URLAttempts = 1;
-            while (downloadURL == null && URLAttempts < 5)
+            while (downloadURL == null && URLAttempts < MAX_RETRIES)
             {
                 downloadURL = JSONParser.getDownloadLink(youtubeConverterLink);
                 URLAttempts++;
@@ -56,7 +62,7 @@ public class DownloadManager
             download.downloadFile(downloadURL, saveDir);
 
             download.messageProperty().addListener((observable, oldValue, newValue) -> {
-                if (newValue.equals("Failed") && download.getAttempt() < 5)
+                if (newValue.equals("Failed") && download.getAttempt() < MAX_RETRIES)
                 {
                     try
                     {
