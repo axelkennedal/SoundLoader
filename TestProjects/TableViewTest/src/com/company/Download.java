@@ -2,12 +2,11 @@ package com.company;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.concurrent.Task;
-import javafx.scene.control.ProgressIndicator;
 
 /**
  * Model class for testing.
  * @author Axel Kennedal
- * @version 1.0
+ * @version 1.2
  * Created on 2015-12-21.
  */
 public class Download extends Task

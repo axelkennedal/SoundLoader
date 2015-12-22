@@ -11,23 +11,56 @@ import java.net.URL;
  */
 public class JSONParser
 {
+    /**
+     * Attempts to get the download link from the youtube to mp3 API.
+     * @param youtubeConverterLink
+     * @return the download link if successful, null otherwise
+     */
     public static String getDownloadLink(String youtubeConverterLink)
     {
-        String link = null;
         try
         {
             String JSONResponse = IOUtils.toString(new URL(youtubeConverterLink));
-            String key = "link";
-            int startIndex = JSONResponse.indexOf("\"" + key + "\"") + key.length() + 4;
-            int endIndex = JSONResponse.indexOf("\",\"", startIndex);
-            if (endIndex == -1) endIndex = JSONResponse.indexOf('}', startIndex);
-            link = JSONResponse.substring(startIndex, endIndex);
-            link = link.replace("\\", "");
+
+            if (!isJSON(JSONResponse))
+            {
+                return null;
+            }
+
+            return value("link", JSONResponse);
         }
         catch (Exception e)
         {
             e.printStackTrace();
         }
-        return link;
+        return null;
+    }
+
+    /**
+     * Super naive check to see if a String is JSON.
+     * @param possibleJSON a String that might be JSON
+     * @return true if JSON, false otherwise
+     */
+    private static boolean isJSON(String possibleJSON)
+    {
+        if (possibleJSON.trim().startsWith("{") && possibleJSON.trim().endsWith("}")) { return true; }
+        else return false;
+    }
+
+    /**
+     * Get the value of a key in a JSON object.
+     * @param key the key who's value is looked for
+     * @param JSON the JSON to look in
+     * @return the value if found, null otherwise
+     */
+    private static String value(String key, String JSON)
+    {
+        String value = null;
+        int startIndex = JSON.indexOf("\"" + key + "\"") + key.length() + 4;
+        int endIndex = JSON.indexOf("\",\"", startIndex);
+        if (endIndex == -1) endIndex = JSON.indexOf('}', startIndex);
+        value = JSON.substring(startIndex, endIndex);
+        value = value.replace("\\", "");
+        return value;
     }
 }

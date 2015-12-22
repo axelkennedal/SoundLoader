@@ -1,23 +1,20 @@
 package SoundLoader.View;
 
-import SoundLoader.Controller.DownloadManager;
 import SoundLoader.Controller.Main;
 import SoundLoader.Model.HttpDownload;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressIndicator;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.ProgressBarTableCell;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.util.Observable;
-import java.util.Observer;
 
 /**
  * Creates and manages everything UI.
@@ -25,12 +22,12 @@ import java.util.Observer;
  * @version 1.0
  * Created on 2015-12-20.
  */
-public class UIManager implements Observer
+public class UIManager
 {
     // keep a pointer back to the main class so this class can communicate with others
     Main mainApplicationClass;
 
-    final static int MIN_WIDTH = 300; final static int MAX_WIDTH = 400;
+    final static int MIN_WIDTH = 400; final static int MAX_WIDTH = 500;
     final static int MIN_HEIGHT = 450; final static int MAX_HEIGHT = 600;
 
     Stage mainWindow;
@@ -42,8 +39,7 @@ public class UIManager implements Observer
     Label savingToLabel;
     Label downloadsLabel;
 
-    Label statusLabel;
-    ProgressIndicator progressIndicator;
+    private FlexibleTableView flexibleTableView;
 
     /**
      * Main constructor, creates a graphical window and UI and displays it.
@@ -106,11 +102,33 @@ public class UIManager implements Observer
         downloadsLabel = new Label("Downloads");
         layoutGrid.add(downloadsLabel, 1, 2);
 
-        statusLabel = new Label("IDLE");
-        layoutGrid.add(statusLabel, 0, 3);
+        createTable();
+        layoutGrid.add(flexibleTableView.getContainer(), 0, 3, 3, 1);
 
-        progressIndicator = new ProgressIndicator(0);
-        layoutGrid.add(progressIndicator, 1, 3);
+    }
+
+    private void createTable()
+    {
+        flexibleTableView = new FlexibleTableView(new Insets(0,0,0,0));
+
+        TableColumn<HttpDownload, String> trackNameColumn = new TableColumn("Track Name");
+        TableColumn<HttpDownload, String> statusColumn = new TableColumn("Status");
+        TableColumn<HttpDownload, Double> progressColumn = new TableColumn("Progress");
+
+        // connect columns with properties of the Task of instances of HttpDownload
+        progressColumn.setCellValueFactory(new PropertyValueFactory<HttpDownload, Double>("progress"));
+        progressColumn.setCellFactory(ProgressBarTableCell.<HttpDownload> forTableColumn());
+
+        statusColumn.setCellValueFactory(new PropertyValueFactory<HttpDownload, String>("message"));
+
+        ObservableList<HttpDownload> data = FXCollections.observableArrayList();
+
+        trackNameColumn.setCellValueFactory(new PropertyValueFactory<HttpDownload, String>("trackName"));
+
+        flexibleTableView.setColumns(
+                new TableColumn[]{trackNameColumn, statusColumn, progressColumn},
+                new double[]{0.6, 0.2, 0.2}
+        );
     }
 
     /**
@@ -120,10 +138,13 @@ public class UIManager implements Observer
     private void setEventHandlers()
     {
         downloadButton.setOnAction(event ->
-                progressIndicator.progressProperty().bind(
-                        mainApplicationClass.getDownloadManager().startNewYoutubeDownload(linkField.getText())
-                                .getDownloadTask().progressProperty()
-                ));
+                {
+                    mainApplicationClass.getDownloadManager().startNewYoutubeDownload(
+                            linkField.getText().trim()
+                    );
+
+                }
+        );
 
         savingToButton.setOnAction(event -> {
             DirectoryChooser savingToDirectoryChooser = new DirectoryChooser();
@@ -136,39 +157,8 @@ public class UIManager implements Observer
         });
     }
 
-    /**
-     * Handle updates received from Observable objects this is listening to.
-     * @param o The notifier
-     * @param arg Data about the update
-     */
-    @Override
-    public void update(Observable o, Object arg)
+    public FlexibleTableView getFlexibleTableView()
     {
-        if (o instanceof DownloadManager && arg instanceof HttpDownload)
-        {
-            handleDownloadStatusUpdate((HttpDownload) arg);
-        }
-    }
-
-    private void handleDownloadStatusUpdate(HttpDownload notifier)
-    {
-        Color newColor = null;
-        switch (notifier.getCurrentStatus())
-        {
-            case CONNECTING:
-                newColor = Color.GRAY;
-                break;
-            case DOWNLOADING:
-                newColor = Color.BLUE;
-                break;
-            case COMPLETED:
-                newColor = Color.FORESTGREEN;
-                break;
-            case FAILED:
-                newColor = Color.RED;
-                break;
-        }
-        statusLabel.setTextFill(newColor);
-        statusLabel.setText(notifier.getCurrentStatus().name());
+        return flexibleTableView;
     }
 }

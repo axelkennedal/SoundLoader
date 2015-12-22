@@ -22,7 +22,7 @@ public class Main extends Application
     @Override
     public void start(Stage primaryStage) throws Exception
     {
-        downloadManager = new DownloadManager();
+        downloadManager = new DownloadManager(this);
         uiManager = new UIManager(this, primaryStage);
     }
 
