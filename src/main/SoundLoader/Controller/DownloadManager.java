@@ -18,7 +18,7 @@ import java.util.Observer;
 public class DownloadManager
 {
     private static String youtubeConverterURL = "http://www.youtubeinmp3.com/fetch/?format=JSON&video=";
-    private static int MAX_RETRIES = 5;
+    private static int MAX_RETRIES = 10;
     private String saveDir;
     Main mainApplicationClass;
 

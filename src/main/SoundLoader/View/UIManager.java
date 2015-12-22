@@ -4,6 +4,7 @@ import SoundLoader.Controller.Main;
 import SoundLoader.Model.HttpDownload;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -11,6 +12,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.ProgressBarTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.Clipboard;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.DirectoryChooser;
@@ -78,8 +80,14 @@ public class UIManager
         layoutGrid = new GridPane();
         layoutGrid.setGridLinesVisible(debug);
         layoutGrid.setAlignment(Pos.TOP_CENTER);
-        layoutGrid.setHgap(10); layoutGrid.setVgap(10);
+        layoutGrid.setHgap(20); layoutGrid.setVgap(10);
         layoutGrid.setPadding(new Insets(20, 10, 10, 10));
+
+        ColumnConstraints column1 = new ColumnConstraints();
+        column1.setPercentWidth(30);
+        ColumnConstraints column2 = new ColumnConstraints();
+        column2.setPercentWidth(70);
+        layoutGrid.getColumnConstraints().addAll(column1, column2);
     }
 
     /**
@@ -93,23 +101,31 @@ public class UIManager
                 "and then click Download");
         clipboardLabel.setWrapText(true);
         clipboardLabel.setTextAlignment(TextAlignment.CENTER);
+        GridPane.setHalignment(clipboardLabel, HPos.CENTER);
         clipboardLabel.setMinHeight(40);
-        layoutGrid.add(clipboardLabel, 0, 0, 3, 1);
+        layoutGrid.add(clipboardLabel, 0, 0, 2, 1);
 
         downloadButton = new Button("Download");
-        layoutGrid.add(downloadButton, 1, 1);
+        downloadButton.setMaxWidth(10000);
+        downloadButton.setMinHeight(60);
+        layoutGrid.add(downloadButton, 0, 1, 2, 1);
 
         savingToButton = new Button("Saving to:");
         layoutGrid.add(savingToButton, 0, 2);
 
         savingToLabel = new Label("<- Click to choose location");
-        layoutGrid.add(savingToLabel, 1 ,2 ,2, 1);
+        savingToLabel.setTextAlignment(TextAlignment.RIGHT);
+        GridPane.setHalignment(savingToLabel, HPos.RIGHT);
+        savingToLabel.setTextOverrun(OverrunStyle.LEADING_WORD_ELLIPSIS);
+        layoutGrid.add(savingToLabel, 1 ,2);
 
         downloadsLabel = new Label("Downloads");
-        layoutGrid.add(downloadsLabel, 1, 3);
+        downloadsLabel.setTextAlignment(TextAlignment.CENTER);
+        GridPane.setHalignment(downloadsLabel, HPos.CENTER);
+        layoutGrid.add(downloadsLabel, 0, 3, 2, 1);
 
         createTable();
-        layoutGrid.add(flexibleTableView.getContainer(), 0, 4, 3, 1);
+        layoutGrid.add(flexibleTableView.getContainer(), 0, 4, 2, 1);
 
     }
 
@@ -151,7 +167,7 @@ public class UIManager
             if (saveDirectory != null)
             {
                 mainApplicationClass.getDownloadManager().setSaveDir(saveDirectory.toString());
-                savingToLabel.setText(mainApplicationClass.getDownloadManager().getSaveDir());
+                savingToLabel.setText(mainApplicationClass.getDownloadManager().getSaveDir() + "/");
             }
         });
     }
