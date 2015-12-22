@@ -1,6 +1,8 @@
 package com.company;
 
 import javafx.beans.property.SimpleStringProperty;
+import javafx.concurrent.Task;
+import javafx.scene.control.ProgressIndicator;
 
 /**
  * Model class for testing.
@@ -8,7 +10,7 @@ import javafx.beans.property.SimpleStringProperty;
  * @version 1.0
  * Created on 2015-12-21.
  */
-public class Download
+public class Download extends Task
 {
     private SimpleStringProperty trackName;
     private SimpleStringProperty artist;
@@ -64,5 +66,25 @@ public class Download
     public void setLength(String length)
     {
         this.length.set(length);
+    }
+
+    /*
+    Simulate performing a download
+     */
+    @Override
+    protected Object call() throws Exception
+    {
+        updateMessage("Connecting...");
+        Thread.sleep(500);
+
+        for (int i = 1; i <= 100; i++)
+        {
+            updateProgress(0.01 * i, 1.0);
+            updateMessage("Working...");
+            Thread.sleep(20);
+        }
+        updateMessage("Done");
+
+        return true;
     }
 }

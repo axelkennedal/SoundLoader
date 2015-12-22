@@ -75,6 +75,11 @@ public class FlexibleTableView
         tableView.setItems(data);
     }
 
+    public ObservableList getData()
+    {
+        return tableView.getItems();
+    }
+
     public TableView getTableView()
     {
         return tableView;
