@@ -1,0 +1,43 @@
+<html><head>
+  <SCRIPT src="http://java.com/js/dtjava.js"></SCRIPT>
+<script>
+    function launchApplication(jnlpfile) {
+        dtjava.launch(            {
+                url : 'SoundLoader.jnlp'
+            },
+            {
+                javafx : '8.0+'
+            },
+            {}
+        );
+        return false;
+    }
+</script>
+
+<script>
+    function javafxEmbedSoundLoader_id() {
+        dtjava.embed(
+            {
+                id : 'SoundLoader_id',
+                url : 'SoundLoader.jnlp',
+                placeholder : 'javafx-app-placeholder',
+                width : '400',
+                height : '600'
+            },
+            {
+                javafx : '8.0+'
+            },
+            {}
+        );
+    }
+    <!-- Embed FX application into web page once page is loaded -->
+    dtjava.addOnloadCallback(javafxEmbedSoundLoader_id);
+</script>
+
+</head><body>
+<h2>Test page for <b>SoundLoader</b></h2>
+  <b>Webstart:</b> <a href='SoundLoader.jnlp' onclick="return launchApplication('SoundLoader.jnlp');">click to launch this app as webstart</a><br><hr><br>
+
+  <!-- Applet will be inserted here -->
+  <div id='javafx-app-placeholder'></div>
+</body></html>

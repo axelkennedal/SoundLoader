@@ -41,7 +41,7 @@ public class DownloadManager
      */
     public HttpDownload startNewYoutubeDownload(String youtubeLink)
     {
-        if (saveDir == null)
+        if (saveDir == null || !youtubeLink.contains("www.youtube.com"))
         {
             return null;
         }
@@ -75,7 +75,7 @@ public class DownloadManager
             });
 
             UIManager uiManager =  mainApplicationClass.getUiManager();
-            uiManager.getFlexibleTableView().getData().add(download);
+            uiManager.getFlexibleTableView().getData().add(0, download);
 
             return download;
         }

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="SoundLoader.jnlp">
+  <information>
+    <title>SoundLoader</title>
+    <vendor>Axel Kennedal</vendor>
+    <description>SoundLoader</description>
+    <offline-allowed/>
+  </information>
+  <resources>
+    <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+    <jar href="SoundLoader.jar" size="12895" download="eager" />
+  </resources>
+  <jfx:javafx-desc  width="400" height="600" main-class="Main"  name="SoundLoader" />
+  <update check="background"/>
+</jnlp>
