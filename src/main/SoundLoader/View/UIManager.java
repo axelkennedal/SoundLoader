@@ -63,12 +63,13 @@ public class UIManager
     {
         mainWindow.setTitle("SoundLoader");
 
+        layoutGrid.getChildren().add(new ApplicationMenu(mainWindow).createApplicationMenu());
+
         Scene mainScene = new Scene(layoutGrid, MIN_WIDTH, MIN_HEIGHT);
         mainWindow.setMaxWidth(MAX_WIDTH); mainWindow.setMinWidth(MIN_WIDTH);
         mainWindow.setMaxHeight(MAX_HEIGHT); mainWindow.setMinHeight(MIN_HEIGHT);
 
         mainScene.getStylesheets().add(UIManager.class.getResource("style.css").toExternalForm());
-
         mainWindow.setScene(mainScene);
     }
 

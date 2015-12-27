@@ -1,3 +1,8 @@
+/**
+ * Main stylesheet for application.
+ @author Axel Kennedal
+ @version 1.0
+ */
 .root
 {
     -fx-background-color: #333;
@@ -43,11 +48,6 @@
 {
     -fx-background-color: transparent;
     -fx-cell-size: 100px;
-    /*
-    -fx-padding: 10 0 10 0;
-    -fx-border-insets: 10 0 10 0;
-    -fx-background-insets: 10 0 10 0;
-    */
 }
 
 .table-row-cell:filled
