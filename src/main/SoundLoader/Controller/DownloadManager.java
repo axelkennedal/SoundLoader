@@ -12,7 +12,7 @@ import java.util.Observer;
 
 /**
  * @author Axel Kennedal
- * @version 2.0
+ * @version 2.1
  * Created on 2015-12-18.
  */
 public class DownloadManager

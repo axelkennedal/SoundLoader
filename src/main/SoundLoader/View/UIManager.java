@@ -2,9 +2,6 @@ package SoundLoader.View;
 
 import SoundLoader.Controller.Main;
 import SoundLoader.Model.HttpDownload;
-import javafx.beans.property.ReadOnlyDoubleProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -25,7 +22,7 @@ import java.io.File;
 /**
  * Creates and manages everything UI.
  * @author Axel Kennedal
- * @version 2.2
+ * @version 3.0
  * Created on 2015-12-20.
  */
 public class UIManager
